@@ -1,4 +1,5 @@
 import path from 'path';
+import isCi from 'is-ci';
 
 import type { GatsbyNode } from 'gatsby';
 
@@ -13,6 +14,13 @@ type PageQueryResult = {
 };
 
 export const createPages: GatsbyNode['createPages'] = async ({ graphql, actions }) => {
+    console.log(`ENV check`, {
+        isCi,
+        GATSBY_EXPERIMENTAL_DISABLE_SCHEMA_REBUILD: process.env.GATSBY_EXPERIMENTAL_DISABLE_SCHEMA_REBUILD,
+        GATSBY_ENABLE_QUERY_ON_DEMAND_IN_CI: process.env.GATSBY_ENABLE_QUERY_ON_DEMAND_IN_CI,
+        GATSBY_QUERY_ON_DEMAND: process.env.GATSBY_QUERY_ON_DEMAND
+    });
+
     const { createPage } = actions;
     const ComposablePage = path.resolve(`src/templates/composable-page.tsx`);
     const result: PageQueryResult = await graphql(`
