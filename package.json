@@ -8,8 +8,8 @@
         "gatsby"
     ],
     "scripts": {
-        "develop": "gatsby develop",
-        "start": "gatsby develop",
+        "develop": "gatsby develop -H 0.0.0.0",
+        "start": "gatsby develop -H 0.0.0.0",
         "build": "gatsby build",
         "serve": "gatsby serve",
         "clean": "gatsby clean",
@@ -26,6 +26,8 @@
         "react-dom": "^18.2.0"
     },
     "devDependencies": {
+        "@stackbit/cms-contentful": "^0.4.27",
+        "@stackbit/types": "^0.10.17",
         "@types/node": "^18.15.3",
         "@types/react": "^18.0.28",
         "@types/react-dom": "^18.0.11",

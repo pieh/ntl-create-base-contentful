@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { graphql, PageProps } from 'gatsby';
 
 import { Hero } from '../components/Hero';
@@ -12,6 +12,19 @@ const componentMap = {
 };
 
 export default function ComposablePageTemplate({ data }: PageProps) {
+    useEffect(() => {
+        const handleContentChange = async (event: Event) => {
+            event.preventDefault();
+            await fetch('/__refresh', { method: 'POST' });
+        };
+
+        window.addEventListener('stackbitObjectsChanged', handleContentChange);
+
+        return () => {
+            window.removeEventListener('stackbitObjectsChanged', handleContentChange);
+        };
+    }, []);
+
     const page = (data as any).contentfulPage as ComposablePage;
 
     return (

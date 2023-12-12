@@ -30,7 +30,8 @@ export const createPages: GatsbyNode['createPages'] = async ({ graphql, actions 
         createPage({
             path: `${edge.slug}`,
             component: ComposablePage,
-            context: { slug: edge.slug }
+            context: { slug: edge.slug },
+            ownerNodeId: edge.contentful_id
         });
     });
 };
