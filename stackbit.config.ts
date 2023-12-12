@@ -4,6 +4,8 @@ import { defineStackbitConfig } from '@stackbit/types';
 export default defineStackbitConfig({
     stackbitVersion: '~0.6.0',
     ssgName: 'gatsby',
+    nodeVersion: '18',
+    devCommand: 'node_modules/.bin/gatsby develop --port {PORT} --hostname 127.0.0.1',
     contentSources: [
         new ContentfulContentSource({
             spaceId: process.env.CONTENTFUL_SPACE_ID!,
