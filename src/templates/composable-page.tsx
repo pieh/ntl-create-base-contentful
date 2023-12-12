@@ -1,37 +1,18 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { graphql, PageProps } from 'gatsby';
 
-import { Hero } from '../components/Hero';
-import { Stats } from '../components/Stats';
-
 import type { ComposablePage } from '../types/app';
-
-const componentMap = {
-    ContentfulHero: Hero,
-    ContentfulStats: Stats
-};
+import { DynamicComponent } from '../utils/dynamic-component';
+import { useContentChange } from '../utils/use-content-change';
 
 export default function ComposablePageTemplate({ data }: PageProps) {
-    useEffect(() => {
-        const handleContentChange = async (event: Event) => {
-            event.preventDefault();
-            await fetch('/__refresh', { method: 'POST' });
-        };
-
-        window.addEventListener('stackbitObjectsChanged', handleContentChange);
-
-        return () => {
-            window.removeEventListener('stackbitObjectsChanged', handleContentChange);
-        };
-    }, []);
-
+    useContentChange();
     const page = (data as any).contentfulPage as ComposablePage;
 
     return (
         <div>
             {(page.sections || []).map((section, idx) => {
-                const Component = componentMap[section.__typename] as any;
-                return <Component key={idx} {...section} />;
+                return <DynamicComponent key={idx} {...section} />;
             })}
         </div>
     );
@@ -47,8 +28,11 @@ export const query = graphql`
                 ... on ContentfulHero {
                     __typename
                     contentful_id
+                    id
                     body {
-                        body
+                        internal {
+                            content
+                        }
                     }
                     button {
                         url
@@ -64,10 +48,12 @@ export const query = graphql`
                 }
                 ... on ContentfulStats {
                     __typename
-                    heading
                     contentful_id
+                    heading
                     body {
-                        body
+                        internal {
+                            content
+                        }
                     }
                     stats {
                         contentful_id
